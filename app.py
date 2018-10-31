@@ -1,24 +1,34 @@
 from flask import Flask, render_template, request
-import sqlite3
+import os
 
 app = Flask(__name__)
 
+countries = ['Andorra', 'Austria', 'Belgium', 'Cyprus', 'Estonia', 'Finland',
+             'France', 'Germany', 'Greece', 'Ireland', 'Italy', 'Latvia',
+             'Lithuania', 'Luxembourg', 'Malta', 'Monaco', 'Netherlands',
+             'Portugal', 'San Marino', 'Slovakia', 'Slovenia', 'Spain', 'Vatican City']
 
-@app.route('/',  methods=['GET', 'POST'])
+# coins = ['2Euro', '1Euro', '50cent', '20cent', '10cent', '5cent', '2cent', '1cent']
+
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
 
-    search = None
-    data = None
+    country_name = ''
+    images_list = ['1', '2']
 
-    con = sqlite3.connect('test.db')
-    db = con.cursor()
+    if request.method == 'POST' and 'submit' in request.form:
+        country_name = request.form['country']
 
-    if request.method == 'POST' and 'search' in request.form:
-        search = request.form['search']
-        res = db.execute('SELECT value, cur_name, country FROM coins where cur_name = ?', (search,))
-        data = res.fetchall()
-    return render_template('index.html', coins=data, search=search)
+        path = "static/Countries/"+country_name+"/"
+        images_list = os.listdir(path)
+
+    return render_template('index.html',
+                           list_countries=countries,
+                           country=country_name,
+                           folder=images_list)
 
 
 if __name__ == '__main__':
     app.run(Debug=True)
+

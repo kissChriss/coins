@@ -1,29 +1,23 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Coins</title>
-</head>
+{% extends "header.html" %}
 
-<body>
-<H2>Coins Collection</H2>
+{% block content %}
 
-<form method="POST" action="">
-      Currencies: <input type="text" name="search">
-      <input type="submit" name="submit" value="Search">
-</form>
+    <form method="POST" action="">
+        <select name="country">
+            <option selected> </option>
+            {% for item in list_countries %}
+                <option> {{ item }} </option>
+            {% endfor %}
+        </select>
 
-{% if search %}
-    {% for item in coins %}
-        <table border="1">
-            <tr>
-                <td>{{ item[0] }}</td>
-                <td>{{ item[1] }}</td>
-                <td>{{ item[2] }}</td>
-            </tr>
-        </table>
+    <input type='submit' name='submit'>
+    </form>
+
+
+    {% for i in folder %}
+        <img src="/static/Countries/{{ country }}/{{ i }}" height="300" width="300">
+        <p> {{ i }} </p>
     {% endfor %}
-{% endif %}
 
-</body>
-</html>
+
+{% endblock %}
